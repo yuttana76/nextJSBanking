@@ -21,7 +21,10 @@ import { Input } from "@/components/ui/input"
 import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
 import { Loader2 } from 'lucide-react'
-import { useRouter } from 'next/router'
+// import router from 'next/router'
+import { useRouter } from 'next/navigation';
+
+import { signIn, signUp } from '@/lib/actions/user.actions'
 
 // const formSchema = z.object({
 //     email: z.string().email(),
@@ -32,9 +35,10 @@ import { useRouter } from 'next/router'
   
 
 const AuthForm = ({type}:{type:string}) => {
-    // const router = useRouter();
+    const router = useRouter();
     const [user, setUser] = useState(null)
     const [isLoading,setIsLoading] = useState(false)
+
     const formSchema = authFormSchema(type)
 
     // 1. Define your form.
@@ -58,18 +62,20 @@ const AuthForm = ({type}:{type:string}) => {
             // setIsLoading(false)
 
             if(type === 'sign-up'){
-                // const newUser = await SignUp(data)
-                // setUser(newUser)
+                const newUser = await signUp(data)
+                setUser(newUser)
 
             }
 
             if(type === 'sign-in'){
-                // const respone = await SignIn({
-                //     email: data.email,
-                //     password: data.password,
-                // })
+                const respone = await signIn({
+                    email: data.email,
+                    password: data.password,
+                })
 
-                // if(respone) router.push('/')
+                console.log(respone)
+
+                if(respone) router.push('/')
 
             }
 
